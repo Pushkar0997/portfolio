@@ -1,17 +1,59 @@
 ---
+import Page from '../layouts/Page.astro';
 
+const title = 'Pushkar Kumar — ML engineering and quantum computing';
+const description =
+  'I build production ML systems and quantum algorithms, and I publish the limitations of both.';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Page title={title} description={description}>
+  <section class="wrap hero">
+    <p class="label">Pune, India</p>
+
+    <h1>
+      I build production ML systems and quantum algorithms — and I publish the
+      limitations of both.
+    </h1>
+
+    <p class="sub">
+      Every case study on this site ends with what&rsquo;s still broken. That is
+      the point.
+    </p>
+
+    <p class="label credentials">
+      Qiskit Advocate, IBM &middot; Lead Organizer, Fall Fest 2026 &middot;
+      Technical Team Lead, QQuEST
+    </p>
+  </section>
+</Page>
+
+<style>
+  .hero {
+    padding-block: var(--s-16) var(--s-24);
+  }
+
+  h1 {
+    max-width: 18ch;
+    margin-block: var(--s-8) 0;
+  }
+
+  .sub {
+    font-size: var(--step-1);
+    color: var(--ink-2);
+    max-width: 46ch;
+    margin-block-start: var(--s-6);
+  }
+
+  .credentials {
+    margin-block-start: var(--s-12);
+    padding-block-start: var(--s-4);
+    border-top: var(--hairline);
+    max-width: 52ch;
+  }
+
+  @media (min-width: 900px) {
+    .hero {
+      padding-block: var(--s-24);
+    }
+  }
+</style>

@@ -1,0 +1,92 @@
+---
+const path = Astro.url.pathname;
+
+const nav = [
+  { href: '/work/', label: 'Work' },
+  { href: '/products/', label: 'Products' },
+  { href: '/services/', label: 'Services' },
+  { href: '/writing/', label: 'Writing' },
+];
+
+const isCurrent = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="/" class="wordmark" aria-label="Pushkar Kumar — home">
+      Pushkar&nbsp;Kumar
+    </a>
+
+    <nav aria-label="Primary">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: var(--hairline);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-6);
+    padding-block: var(--s-4);
+    flex-wrap: wrap;
+  }
+
+  .wordmark {
+    font-family: var(--font-mono);
+    font-size: var(--label);
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  nav ul {
+    display: flex;
+    gap: var(--s-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    font-family: var(--font-mono);
+    font-size: var(--label);
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+    color: var(--ink-3);
+    text-decoration: none;
+    padding-block: var(--s-1);
+    border-bottom: 1px solid transparent;
+    transition: color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease);
+  }
+
+  nav a:hover {
+    color: var(--ink);
+  }
+
+  nav a[aria-current='page'] {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+</style>

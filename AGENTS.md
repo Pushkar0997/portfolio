@@ -1,68 +1,131 @@
-# Conventions
+# AGENTS.md
 
-Portfolio site. Astro, static output, minimal JavaScript.
+Entry point for any agent working in this repo (Claude Code, Antigravity, Copilot).
 
-## Non-negotiables
-- Zero client-side JS unless a component genuinely needs interactivity.
-  Prefer static HTML. Islands only where required, with an explicit
-  `client:` directive and a comment saying why.
-- No CSS framework. Plain CSS with custom properties, defined once in
-  `src/styles/tokens.css`. Never hardcode a colour, spacing value, or
-  font size — always reference a token.
-- No component library. Components are hand-written and live in
-  `src/components/`.
-- Semantic HTML. Real headings in order, real landmarks, real buttons
-  and links. Every image has alt text.
-- Content lives in `src/content/` as markdown with typed frontmatter,
-  never hardcoded into templates.
+**Read `docs/build-spec.md` before making changes.** It is the authoritative spec: architecture, tokens, layout, motion, milestones, and acceptance criteria. This file is the summary; that file settles disputes.
+
+---
+
+## What this is
+
+A personal portfolio site. Astro 5, static output, TypeScript strict, plain CSS. It sells freelance ML/quantum work and hosts case studies and products.
+
+The site's whole premise is that every claim on it carries a visible evidence level, including the unflattering ones. That premise is enforced in code (see "The evidence system" below) and it is the one thing that must not be diluted.
+
+---
+
+## Hard rules
+
+1. **Never write or edit public prose.** Case study copy, project descriptions, hero lines, taglines, evidence strings, the trust strip. Structure and markup only. If a task requires new prose, stop and ask.
+2. **Never invent a metric, result, date, link, or credential.** Absent frontmatter renders as omitted — that is correct behaviour, not a bug to fix.
+3. **Never raise `evidenceLevel`.** Only the repo owner sets that value.
+4. **Never use the evidence triad colours** (`--verified`, `--untested`, `--missed`) outside evidence indicators. No accent links, no coloured buttons, no tinted backgrounds.
+5. **Never hardcode a colour, size, spacing value, duration, or font.** Reference a token from `src/styles/tokens.css`. If a needed value doesn't exist, add it to tokens first.
+6. **Never ship an animation** without a `prefers-reduced-motion` guard and a static final state.
+7. **Never add a dependency** not named in `docs/build-spec.md`. If one seems necessary, stop and ask.
+8. **Never add analytics, trackers, third-party embeds, or external font/script requests.**
+
+---
+
+## Stack
+
+```
+Astro 5 (static)     TypeScript strict     Plain CSS
+@astrojs/sitemap     @fontsource/*         nothing else
+```
+
+No Tailwind, no React, no CSS-in-JS, no animation library, no icon library, no UI kit.
+
+---
 
 ## Structure
+
+```
 src/
-  components/     reusable UI
-  layouts/        page shells
-  pages/          routes
+  components/
+    Layout/          Header, Footer, TrustStrip
+    *.astro          ProjectCard, EvidenceMeasure, StatusStamp, ArcDiagram
+  layouts/
+    Base.astro       html shell, meta, fonts
+    Page.astro       Base + header/main/footer
+    CaseStudy.astro  Page + margin-column chrome
+  pages/             routes, file-based
   content/
-    projects/     case studies, markdown
-    writing/      posts, markdown
+    config.ts        collection schemas
+    projects/*.md    case studies
+    writing/*.md     posts
+  data/
+    products.ts      too few for a collection
+    trust.ts         credentials, single source of truth
   styles/
-    tokens.css    all design tokens
-    global.css    base element styles
-
-## Naming
-- Components: PascalCase (ProjectCard.astro)
-- Everything else: kebab-case
-- CSS custom properties: --kebab-case
-
-## Content schema
-Every project frontmatter carries a `status` field, one of:
-verified | in-progress | metrics-pending | reference
-and a `domain` field: ml | quantum | edge
-
-## Never
-- Never invent metrics, results, or dates. If a value is unknown,
-  leave the frontmatter field absent and it renders as omitted.
-- Never add analytics, trackers, or third-party embeds without asking.
-- Never add a dependency to solve something CSS can already do.
-
-## Development
-
-When starting the dev server, use background mode:
-
-```
-astro dev --background
+    tokens.css       every design value
+    global.css       element defaults + layout primitives
+    motion.css       keyframes + reduced-motion guard
+docs/
+  build-spec.md      authoritative spec
+public/
+  og/                social images
 ```
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+---
 
-## Documentation
+## Conventions
 
-Full documentation: https://docs.astro.build
+- Components: `PascalCase.astro`. Everything else: `kebab-case`.
+- CSS custom properties: `--kebab-case`.
+- Component styles go in the component's `<style>` block, scoped. Only genuinely global rules go in `global.css`.
+- Semantic HTML. Headings in order, no skipped levels. Real landmarks, real buttons, real links.
+- Every image needs meaningful `alt`; decorative SVG gets `aria-hidden="true"`.
+- Layout primitives available: `.wrap`, `.prose`, `.stack`, `.stack-lg`, `.stack-xl`, `.section`, `.label`, `.sr-only`.
 
-Consult these guides before working on related tasks:
+---
 
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+## JavaScript budget
+
+- Zero client JS on `/`, `/work/`, `/services/`, `/writing/`.
+- Islands only on case study pages, only `client:visible`, only with a comment stating why.
+- Every island must render meaningful static content before hydration. No empty divs waiting for JS.
+- Tier 1 motion total JS budget: under 2KB.
+
+The `js` class is added to `<html>` by one inline script in `Base.astro`. Motion that would hide content must be scoped under `.js` so the no-JS render shows the final state.
+
+---
+
+## The evidence system
+
+Every project carries `status` and `evidenceLevel` in frontmatter.
+
+| Status | Level range | Meaning |
+|---|---|---|
+| `verified` | 0.85–1.0 | A public artifact backs this |
+| `metrics-pending` | 0.2–0.4 | Built, not properly evaluated |
+| `in-progress` | 0.0–0.15 | Live work, nothing to check yet |
+| `reference` | n/a | Learning collection, renders as a dash |
+
+`evidenceLevel` drives the visual measure length. The `evidence` string states in plain language what can be checked. They must agree.
+
+**This system exists to make overclaiming visible.** An agent that quietly rounds a 0.3 up to a 0.6 has broken the product, not improved it.
+
+---
+
+## Definition of done
+
+No change ships until:
+
+- `npm run build` passes with zero TypeScript errors
+- Lighthouse: performance ≥ 95, accessibility 100
+- Zero console errors
+- Keyboard navigable, focus visible
+- Content readable with JS disabled
+- No animation plays under `prefers-reduced-motion: reduce`
+- No hardcoded design values introduced
+
+---
+
+## When to stop and ask
+
+- The task needs new public prose
+- The task needs a dependency
+- The task needs a value not in `tokens.css`
+- The spec and the request disagree
+- A metric, date, or result is needed and isn't already in the repo

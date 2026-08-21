@@ -1,0 +1,22 @@
+---
+import Base from './Base.astro';
+import Header from '../components/Layout/Header.astro';
+import Footer from '../components/Layout/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+---
+
+<Base title={title} description={description} ogImage={ogImage}>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <Header />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+</Base>

@@ -1,0 +1,88 @@
+/* ─────────────────────────────────────────────────────────────
+   Design tokens. Every colour, size, and duration lives here.
+   Nothing downstream may hardcode a value.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Ground ─────────────────────────────────────────────────
+     Cool dry bone, not warm paper. The difference is deliberate:
+     warm paper + green accent is a very common look right now. */
+  --page: #e8e5db;
+  --surface: #efece2;
+  --surface-alt: #ddd8ca;
+
+  /* ── Ink and structure ─────────────────────────────────────
+     All non-evidence colour comes from this ramp. */
+  --ink: #16211d;
+  --ink-2: #47504b;
+  --ink-3: #6f6a5f;
+  --ink-4: #8b877c;
+
+  --line: #d9d3c4;
+  --line-strong: #cfc9ba;
+  --line-faint: #b9b3a4;
+
+  /* ── The evidence triad ────────────────────────────────────
+     LAW: these three appear ONLY on evidence indicators.
+     Never on links, buttons, headings, borders, backgrounds.
+     Colour on this site means "this is a claim about proof". */
+  --verified: #3f7d55;
+  --verified-deep: #2f6741;
+  --untested: #9a958a;
+  --missed: #b5432f;
+  --missed-deep: #97371f;
+
+  /* ── Typefaces ─────────────────────────────────────────────
+     Three fonts, three jobs, no overlap.
+     display = titles only, never below --step-2
+     body    = all prose
+     mono    = labels, evidence, metadata, status */
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
+
+  /* ── Type scale ────────────────────────────────────────────
+     1.2 minor third, with a fluid top step for the hero. */
+  --step--1: 0.833rem;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-2: 1.6rem;
+  --step-3: 2.2rem;
+  --step-4: 3rem;
+  --step-5: clamp(2.4rem, 5.5vw, 4.2rem);
+
+  /* Mono label: 11px, uppercase, wide tracking. One size only. */
+  --label: 0.6875rem;
+  --label-track: 0.16em;
+
+  /* ── Space — 4px base ──────────────────────────────────────
+     Use only these. No arbitrary margins. */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-6: 1.5rem;
+  --s-8: 2rem;
+  --s-12: 3rem;
+  --s-16: 4rem;
+  --s-24: 6rem;
+
+  /* ── Layout ────────────────────────────────────────────────*/
+  --measure: 68ch;
+  --width: 1120px;
+  --width-prose: 720px;
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+
+  /* ── Motion ────────────────────────────────────────────────
+     Motion demonstrates or it doesn't ship. See motion.css. */
+  --dur-fast: 180ms;
+  --dur-base: 400ms;
+  --dur-draw: 900ms;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* ── Borders ───────────────────────────────────────────────
+     Hairlines throughout. 1px is the maximum anywhere. */
+  --hairline: 1px solid var(--line);
+  --hairline-strong: 1px solid var(--line-strong);
+  --rule: 1px solid var(--ink);
+}

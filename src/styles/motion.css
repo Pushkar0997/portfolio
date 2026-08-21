@@ -1,0 +1,101 @@
+/* ─────────────────────────────────────────────────────────────
+   Motion system.
+
+   THE RULE: motion demonstrates or it doesn't ship. Every
+   animation must convey something that would otherwise need a
+   sentence. Decorative motion is the visual form of
+   overclaiming — it contradicts the whole positioning.
+
+   Tier 1 (here): CSS only, under 2KB of JS total.
+   Tier 2: interactive islands, one per case study maximum.
+   Tier 3 (prohibited): scroll-jacking, parallax, WebGL, cursor
+   followers, loaders, text scramble, magnetic buttons.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── Draw-in for SVG strokes ────────────────────────────────
+   Used by the hero arc diagram. Sequence carries the argument:
+   ink (verified) → grey (untested) → rust (missed).
+   Failures resolve last, on purpose. */
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes measure-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(var(--fill, 1));
+  }
+}
+
+.draw {
+  stroke-dasharray: var(--len, 1000);
+  stroke-dashoffset: var(--len, 1000);
+  animation: draw var(--dur-draw) var(--ease) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+.fade {
+  opacity: 0;
+  animation: fade-in var(--dur-base) var(--ease) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* ── Evidence measure ───────────────────────────────────────
+   Bar length is the claim: how much proof backs this project.
+   Fills on scroll into view via .in-view, added by a tiny
+   IntersectionObserver. Static fallback is the filled state. */
+
+.measure-bar {
+  transform-origin: left center;
+  transform: scaleX(var(--fill, 1));
+}
+
+.js .measure-bar {
+  transform: scaleX(0);
+}
+
+.js .in-view .measure-bar {
+  animation: measure-fill var(--dur-base) var(--ease) forwards;
+}
+
+/* ── Reduced motion ─────────────────────────────────────────
+   Non-negotiable. Every animated element must reach its final
+   state without motion. Animation enhances a correct static
+   render; it is never a prerequisite for content being visible. */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .draw {
+    stroke-dashoffset: 0;
+  }
+
+  .fade {
+    opacity: 1;
+  }
+
+  .js .measure-bar {
+    transform: scaleX(var(--fill, 1));
+  }
+}
