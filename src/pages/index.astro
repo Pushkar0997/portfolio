@@ -1,59 +1,129 @@
 ---
 import Page from '../layouts/Page.astro';
 
-const title = 'Pushkar Kumar — ML engineering and quantum computing';
+const title = 'Pushkar Kumar — quantum algorithms and production ML systems';
 const description =
-  'I build production ML systems and quantum algorithms, and I publish the limitations of both.';
+  'Quantum algorithms and production ML systems. Qiskit Advocate at IBM. Built the benchmark for the WISER × Moderna challenge with IBM Quantum.';
 ---
 
 <Page title={title} description={description}>
   <section class="wrap hero">
-    <p class="label">Pune, India</p>
+    <p class="label eyebrow">Pune, India</p>
 
-    <h1>
-      I build production ML systems and quantum algorithms — and I publish the
-      limitations of both.
-    </h1>
-
-    <p class="sub">
-      Every case study on this site ends with what&rsquo;s still broken. That is
-      the point.
+    <p class="ket" aria-hidden="true">
+      <span class="br">|</span>Pushkar<span class="br">⟩</span>
+      <span class="op">=</span>
+      <span class="coef">α</span><span class="br">|</span>Quantum<span
+        class="br">⟩</span
+      >
+      <span class="op">+</span>
+      <span class="coef">β</span><span class="br">|</span>AI<span class="br"
+        >⟩</span
+      >
     </p>
 
-    <p class="label credentials">
-      Qiskit Advocate, IBM &middot; Lead Organizer, Fall Fest 2026 &middot;
-      Technical Team Lead, QQuEST
+    <h1>Quantum algorithms and production ML systems.</h1>
+
+    <p class="credentials">
+      Qiskit Advocate at IBM. Built the benchmark for the WISER &times; Moderna
+      challenge with IBM Quantum. Technical Team Lead at QQuEST and Lead
+      Organizer for Qiskit Fall Fest 2026.
+    </p>
+
+    <p class="cta">
+      <a href="/work/">See the work</a>
     </p>
   </section>
 </Page>
 
 <style>
   .hero {
-    padding-block: var(--s-16) var(--s-24);
+    padding-block: var(--s-12) var(--s-16);
+  }
+
+  .eyebrow {
+    margin: 0;
+  }
+
+  /* ── The ket ──────────────────────────────────────────────
+     Set as real notation, not decoration. Brackets and
+     operators recede so the three words carry the line.
+     aria-hidden because a screen reader announcing "vertical
+     bar Pushkar right angle bracket" is noise — the h1 below
+     carries the same claim in plain language. */
+
+  .ket {
+    font-family: var(--font-mono);
+    font-size: clamp(1.35rem, 4.4vw, 2.6rem);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-block: var(--s-8) 0;
+    max-width: none;
+    text-wrap: balance;
+  }
+
+  .ket .br,
+  .ket .op {
+    color: var(--ink-4);
+  }
+
+  .ket .op {
+    padding-inline: 0.15em;
+  }
+
+  .ket .coef {
+    color: var(--ink-3);
+  }
+
+  /* Superposition terms resolve after the state label.
+     Motion demonstrates: the two branches arrive together,
+     neither before the other. */
+  .ket .coef,
+  .ket .br,
+  .ket .op {
+    animation: fade-in var(--dur-base) var(--ease) both;
   }
 
   h1 {
-    max-width: 18ch;
-    margin-block: var(--s-8) 0;
-  }
-
-  .sub {
-    font-size: var(--step-1);
-    color: var(--ink-2);
-    max-width: 46ch;
-    margin-block-start: var(--s-6);
+    font-size: var(--step-3);
+    max-width: 20ch;
+    margin-block-start: var(--s-8);
+    padding-block-start: var(--s-6);
+    border-top: var(--hairline);
   }
 
   .credentials {
+    color: var(--ink-2);
+    max-width: 54ch;
+    margin-block-start: var(--s-6);
+  }
+
+  .cta {
     margin-block-start: var(--s-12);
-    padding-block-start: var(--s-4);
-    border-top: var(--hairline);
-    max-width: 52ch;
+  }
+
+  .cta a {
+    font-family: var(--font-mono);
+    font-size: var(--label);
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: var(--rule);
+    padding-block-end: var(--s-1);
+  }
+
+  .cta a:hover {
+    border-bottom-color: var(--ink-3);
   }
 
   @media (min-width: 900px) {
     .hero {
-      padding-block: var(--s-24);
+      padding-block: var(--s-16) var(--s-24);
+    }
+
+    h1 {
+      font-size: var(--step-4);
     }
   }
 </style>
