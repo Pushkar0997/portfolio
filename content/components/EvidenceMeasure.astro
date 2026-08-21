@@ -1,0 +1,89 @@
+---
+/* Treatment B: the card is measured.
+
+   Bar length IS the claim — how much evidence backs this
+   project. Scanning a grid means reading four line lengths,
+   which is faster than reading four labels and harder to skim
+   past. A short rust bar is visibly short before you read a
+   word of it.
+
+   `reference` has no meaningful quantity of evidence — it is
+   a learning collection by design — so it renders as a dash
+   rather than a zero-length bar, which would imply failure. */
+
+interface Props {
+  level: number;
+  status: 'verified' | 'in-progress' | 'metrics-pending' | 'reference';
+  evidence: string;
+}
+
+const { level, status, evidence } = Astro.props;
+
+const isReference = status === 'reference';
+const clamped = Math.max(0, Math.min(1, level));
+---
+
+<div class="measure">
+  {
+    isReference ? (
+      <div class="rail" aria-hidden="true">
+        <span class="dash" />
+      </div>
+    ) : (
+      <div class="rail" aria-hidden="true">
+        <span
+          class="measure-bar fill"
+          data-status={status}
+          style={`--fill: ${clamped}`}
+        />
+      </div>
+    )
+  }
+  <p class="evidence">{evidence}</p>
+</div>
+
+<style>
+  .rail {
+    position: relative;
+    height: 3px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .fill {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  .fill[data-status='verified'] {
+    background: var(--verified);
+  }
+
+  .fill[data-status='metrics-pending'] {
+    background: var(--missed);
+  }
+
+  .fill[data-status='in-progress'] {
+    background: var(--untested);
+  }
+
+  .dash {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 14px;
+    background: var(--untested);
+  }
+
+  .evidence {
+    font-family: var(--font-mono);
+    font-size: var(--label);
+    letter-spacing: 0.04em;
+    color: var(--ink-3);
+    line-height: 1.5;
+    margin-block-start: var(--s-3);
+    max-width: 46ch;
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+/* Treatment A: the label is a stamp, not a badge.
+   Outlined, never filled — a filled pill reads as a CI status
+   chip. An outline reads as something applied deliberately by
+   a person who inspected the work. */
+
+interface Props {
+  status: 'verified' | 'in-progress' | 'metrics-pending' | 'reference';
+}
+
+const { status } = Astro.props;
+
+const labels = {
+  verified: 'Verified',
+  'in-progress': 'In progress',
+  'metrics-pending': 'Metrics pending',
+  reference: 'Reference',
+} as const;
+---
+
+<span class="stamp" data-status={status}>{labels[status]}</span>
+
+<style>
+  .stamp {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--label);
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+    line-height: 1;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid currentColor;
+    white-space: nowrap;
+  }
+
+  /* The triad, spent only here and on the measure. */
+  .stamp[data-status='verified'] {
+    color: var(--verified-deep);
+  }
+
+  .stamp[data-status='metrics-pending'] {
+    color: var(--missed-deep);
+  }
+
+  .stamp[data-status='in-progress'],
+  .stamp[data-status='reference'] {
+    color: var(--untested);
+  }
+</style>

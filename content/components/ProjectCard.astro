@@ -1,0 +1,120 @@
+---
+import StatusStamp from './StatusStamp.astro';
+import EvidenceMeasure from './EvidenceMeasure.astro';
+
+/* The hybrid: B's measure carries the quantity, A's stamp
+   carries the word. Length is unskippable; the stamp keeps it
+   out of dashboard territory. */
+
+interface Props {
+  href: string;
+  title: string;
+  tagline: string;
+  status: 'verified' | 'in-progress' | 'metrics-pending' | 'reference';
+  evidence: string;
+  evidenceLevel: number;
+  year: string;
+  org?: string;
+  domain: 'ml' | 'quantum' | 'edge';
+}
+
+const {
+  href,
+  title,
+  tagline,
+  status,
+  evidence,
+  evidenceLevel,
+  year,
+  org,
+  domain,
+} = Astro.props;
+
+const domainLabels = {
+  ml: 'AI / ML',
+  quantum: 'Quantum computing',
+  edge: 'Edge / IoT',
+} as const;
+---
+
+<article class="card">
+  <EvidenceMeasure level={evidenceLevel} status={status} evidence={evidence} />
+
+  <div class="head">
+    <p class="label meta">
+      {domainLabels[domain]} &middot; {year}{org && <> &middot; {org}</>}
+    </p>
+    <StatusStamp status={status} />
+  </div>
+
+  <h3>
+    <a href={href}>{title}</a>
+  </h3>
+
+  <p class="tagline">{tagline}</p>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding-block-start: var(--s-6);
+    border-top: var(--hairline);
+  }
+
+  /* The measure sits above the rule visually by pulling up into
+     the card's top padding — it reads as the card's own edge
+     being marked, rather than a separate widget. */
+  .card > :global(.measure) {
+    margin-block-start: calc(var(--s-6) * -1 - 3px);
+    margin-block-end: var(--s-6);
+  }
+
+  .head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+  }
+
+  .meta {
+    margin: 0;
+  }
+
+  h3 {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    line-height: 1.15;
+    margin-block-start: var(--s-4);
+    max-width: 24ch;
+  }
+
+  h3 a {
+    text-decoration: none;
+  }
+
+  /* Whole card is the hit target, without nesting interactive
+     elements — the anchor stretches over the article. */
+  h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card {
+    position: relative;
+  }
+
+  .card:hover h3 a {
+    text-decoration: underline;
+    text-decoration-color: var(--ink-3);
+    text-underline-offset: 0.15em;
+  }
+
+  .tagline {
+    color: var(--ink-2);
+    margin-block-start: var(--s-3);
+    max-width: 48ch;
+  }
+</style>
