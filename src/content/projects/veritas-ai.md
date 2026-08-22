@@ -8,8 +8,8 @@ evidence: 'No held-out evaluation published. The training metrics were lost with
 evidenceLevel: 0.3
 links:
   repo: https://github.com/Pushkar0997/vertex-pytorch-trainers
+  app: https://github.com/Pushkar0997/veritas_ai_v2
   model: https://huggingface.co/PushkarKumar/veritas_ai_v2
-  demo: https://github.com/Pushkar0997/veritas_ai_v2
 featured: true
 order: 3
 ---
@@ -46,7 +46,7 @@ Then the failures, in the order they were found:
 
 What came out of it: NCCL configured explicitly for GCP's inter-GPU behaviour, and a four-destination save strategy — Vertex output path, primary GCS bucket, timestamped GCS backup, local copy — with upload retry and verification.
 
-And a smoke test. Before any GPU spins up, a trivial scikit-learn job runs against the same service account to confirm IAM permissions and GCS access work. It costs nothing and it catches the failure that otherwise surfaces forty minutes into an expensive job.
+And a smoke test. Before any GPU spins up, a trivial scikit-learn job runs against the same service account to confirm IAM permissions and GCS access work. It costs nothing and it catches the failure that otherwise surfaces forty minutes into an expensive job. It is in the same repository as the Veritas trainer, as a separate module.
 
 ## Why there is no accuracy number here
 
@@ -58,4 +58,4 @@ The evaluation that would settle this is straightforward: reload v2, rebuild the
 
 ## Limits
 
-The deployed inference app does no URL scraping, no evidence retrieval and no external fact-checking — it classifies text you give it and returns a probability. It is a signal for triage with a human in the loop, not a fact-checker. The model is English-only, and mixing claim-style data with article-style data creates domain-shift effects that have not been characterised.
+The deployed inference app does no URL scraping, no evidence retrieval and no external fact-checking — it classifies text you give it and returns a probability. It is a signal for triage with a human in the loop, not a fact-checker. The model is English-only, and mixing claim-style data with article-style data creates domain-shift effects that have not been characterised. The Hugging Face Space sleeps after inactivity — it takes about a minute to wake on first request.

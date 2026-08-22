@@ -23,6 +23,7 @@ interface Props {
   links: {
     repo?: string;
     demo?: string;
+    app?: string;
     model?: string;
     report?: string;
   };
@@ -47,9 +48,10 @@ const domainLabels = {
 } as const;
 
 const linkLabels = {
-  repo: 'Repository',
+  repo: 'Training code',
   demo: 'Live demo',
-  model: 'Model',
+  app: 'Application source',
+  model: 'Model on Hugging Face',
   report: 'Full report',
 } as const;
 

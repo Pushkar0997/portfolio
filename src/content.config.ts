@@ -31,6 +31,7 @@ const projects = defineCollection({
       .object({
         repo: z.string().url().optional(),
         demo: z.string().url().optional(),
+        app: z.string().url().optional(),
         model: z.string().url().optional(),
         report: z.string().url().optional(),
       })
