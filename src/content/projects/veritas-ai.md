@@ -7,7 +7,7 @@ year: '2025–2026'
 evidence: 'No held-out evaluation published. The training metrics were lost with the cloud account.'
 evidenceLevel: 0.3
 links:
-  repo: https://github.com/Pushkar0997/vertex-pytorch-trainers
+  training: https://github.com/Pushkar0997/vertex-pytorch-trainers
   app: https://github.com/Pushkar0997/veritas_ai_v2
   model: https://huggingface.co/PushkarKumar/veritas_ai_v2
 featured: true
