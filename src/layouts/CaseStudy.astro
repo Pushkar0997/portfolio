@@ -1,0 +1,284 @@
+---
+import Page from './Page.astro';
+import StatusStamp from '../components/StatusStamp.astro';
+import EvidenceMeasure from '../components/EvidenceMeasure.astro';
+
+/* The layout signature: prose in the left columns, a persistent
+   margin column holding evidence and links. It reads as an
+   annotated document rather than a blog post — which is the
+   right register for work whose whole claim is checkability.
+
+   Below 900px the margin column moves above the prose, because
+   the evidence is the first thing worth seeing on a phone. */
+
+interface Props {
+  title: string;
+  tagline: string;
+  status: 'verified' | 'in-progress' | 'metrics-pending' | 'reference';
+  evidence: string;
+  evidenceLevel: number;
+  year: string;
+  org?: string;
+  domain: 'ml' | 'quantum' | 'edge';
+  links: {
+    repo?: string;
+    demo?: string;
+    model?: string;
+    report?: string;
+  };
+}
+
+const {
+  title,
+  tagline,
+  status,
+  evidence,
+  evidenceLevel,
+  year,
+  org,
+  domain,
+  links,
+} = Astro.props;
+
+const domainLabels = {
+  ml: 'AI / ML',
+  quantum: 'Quantum computing',
+  edge: 'Edge / IoT',
+} as const;
+
+const linkLabels = {
+  repo: 'Repository',
+  demo: 'Live demo',
+  model: 'Model',
+  report: 'Full report',
+} as const;
+
+const linkEntries = (
+  Object.entries(links) as [keyof typeof linkLabels, string][]
+).filter(([, url]) => Boolean(url));
+---
+
+<Page title={`${title} — Pushkar Kumar`} description={tagline}>
+  <article class="wrap case">
+    <header class="head">
+      <p class="label breadcrumb">
+        <a href="/work/">Work</a> &middot; {domainLabels[domain]}
+      </p>
+
+      <h1>{title}</h1>
+      <p class="tagline">{tagline}</p>
+    </header>
+
+    <div class="body">
+      <div class="prose-col">
+        <slot />
+      </div>
+
+      <aside class="margin-col" aria-label="Project evidence and links">
+        <div class="panel">
+          <p class="label panel-label">Evidence</p>
+          <StatusStamp status={status} />
+          <div class="measure-slot">
+            <EvidenceMeasure
+              level={evidenceLevel}
+              status={status}
+              evidence={evidence}
+            />
+          </div>
+        </div>
+
+        <div class="panel">
+          <p class="label panel-label">Details</p>
+          <dl>
+            <dt class="label">Year</dt>
+            <dd>{year}</dd>
+            {
+              org && (
+                <>
+                  <dt class="label">Context</dt>
+                  <dd>{org}</dd>
+                </>
+              )
+            }
+          </dl>
+        </div>
+
+        {
+          linkEntries.length > 0 && (
+            <div class="panel">
+              <p class="label panel-label">Check it yourself</p>
+              <ul>
+                {linkEntries.map(([key, url]) => (
+                  <li>
+                    <a href={url} rel="noopener">
+                      {linkLabels[key]}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+  </article>
+</Page>
+
+<style>
+  .case {
+    padding-block: var(--s-12) var(--s-16);
+  }
+
+  .breadcrumb {
+    margin: 0;
+  }
+
+  .breadcrumb a {
+    color: inherit;
+  }
+
+  h1 {
+    font-size: var(--step-4);
+    max-width: 22ch;
+    margin-block-start: var(--s-6);
+  }
+
+  .tagline {
+    font-size: var(--step-1);
+    color: var(--ink-2);
+    max-width: 54ch;
+    margin-block-start: var(--s-4);
+  }
+
+  .body {
+    margin-block-start: var(--s-12);
+    display: grid;
+    gap: var(--s-12);
+  }
+
+  /* ── Prose ───────────────────────────────────────────────── */
+
+  .prose-col {
+    max-width: var(--width-prose);
+  }
+
+  .prose-col :global(h2) {
+    font-size: var(--step-2);
+    margin-block-start: var(--s-12);
+    padding-block-start: var(--s-4);
+    border-top: var(--hairline);
+    max-width: 28ch;
+  }
+
+  .prose-col :global(h2:first-child) {
+    margin-block-start: 0;
+    padding-block-start: 0;
+    border-top: 0;
+  }
+
+  .prose-col :global(p) {
+    margin-block-start: var(--s-4);
+  }
+
+  .prose-col :global(ul),
+  .prose-col :global(ol) {
+    margin-block-start: var(--s-4);
+    max-width: var(--measure);
+  }
+
+  .prose-col :global(li + li) {
+    margin-block-start: var(--s-2);
+  }
+
+  .prose-col :global(strong) {
+    font-weight: 500;
+  }
+
+  .prose-col :global(code) {
+    background: var(--surface);
+    padding: 0.1em 0.35em;
+    border: var(--hairline);
+  }
+
+  /* ── Margin column ───────────────────────────────────────── */
+
+  .margin-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-8);
+  }
+
+  .panel {
+    padding-block-start: var(--s-4);
+    border-top: var(--hairline-strong);
+  }
+
+  .panel-label {
+    margin: 0 0 var(--s-4);
+    color: var(--ink-3);
+  }
+
+  .measure-slot {
+    margin-block-start: var(--s-6);
+  }
+
+  .panel dl {
+    margin: 0;
+    display: grid;
+    gap: var(--s-1);
+  }
+
+  .panel dt {
+    margin-block-start: var(--s-3);
+  }
+
+  .panel dt:first-child {
+    margin-block-start: 0;
+  }
+
+  .panel dd {
+    margin: 0;
+    font-size: var(--step--1);
+  }
+
+  .panel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .panel ul a {
+    font-family: var(--font-mono);
+    font-size: var(--label);
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line-faint);
+    padding-block-end: var(--s-1);
+  }
+
+  .panel ul a:hover {
+    border-bottom-color: var(--ink);
+  }
+
+  /* ── Desktop: the asymmetry ──────────────────────────────── */
+
+  @media (min-width: 900px) {
+    .case {
+      padding-block: var(--s-16) var(--s-24);
+    }
+
+    .body {
+      grid-template-columns: minmax(0, 8fr) minmax(0, 3fr);
+      gap: var(--s-16);
+      align-items: start;
+    }
+
+    .margin-col {
+      position: sticky;
+      top: var(--s-8);
+    }
+  }
+</style>
