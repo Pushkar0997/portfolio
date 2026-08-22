@@ -1,13 +1,60 @@
 ---
+import { getCollection } from 'astro:content';
 import Page from '../../layouts/Page.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order
+);
 ---
 
 <Page
   title="Work — Pushkar Kumar"
   description="Project archive and case studies in ML and quantum computing."
 >
-  <section class="wrap section stack">
-    <h1>Work</h1>
-    <p class="label">In progress</p>
+  <section class="wrap section">
+    <header class="stack">
+      <h1>Work</h1>
+      <p class="label">Every project carries what can be checked</p>
+    </header>
+
+    <div class="grid">
+      {
+        projects.map((project) => (
+          <ProjectCard
+            href={`/work/${project.id}/`}
+            title={project.data.title}
+            tagline={project.data.tagline}
+            status={project.data.status}
+            evidence={project.data.evidence}
+            evidenceLevel={project.data.evidenceLevel}
+            year={project.data.year}
+            org={project.data.org}
+            domain={project.data.domain}
+          />
+        ))
+      }
+    </div>
   </section>
 </Page>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-8);
+    margin-block-start: var(--s-12);
+  }
+
+  @media (min-width: 600px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
