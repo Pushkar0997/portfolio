@@ -1,13 +1,51 @@
 ---
+import { getCollection } from 'astro:content';
 import Page from '../../layouts/Page.astro';
+import ProductCard from '../../components/ProductCard.astro';
+
+const products = (await getCollection('products')).sort(
+  (a, b) => a.data.order - b.data.order
+);
 ---
 
 <Page
   title="Products — Pushkar Kumar"
   description="Live products and tools in quantum computing and machine learning."
 >
-  <section class="wrap section stack">
-    <h1>Products</h1>
-    <p class="label">In progress</p>
+  <section class="wrap section">
+    <header class="stack">
+      <h1>Products</h1>
+      <p class="label">Things you can open and use</p>
+    </header>
+
+    <div class="grid">
+      {
+        products.map((product) => (
+          <ProductCard
+            href={`/products/${product.id}/`}
+            title={product.data.title}
+            tagline={product.data.tagline}
+            status={product.data.status}
+            access={product.data.access}
+            year={product.data.year}
+          />
+        ))
+      }
+    </div>
   </section>
 </Page>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-8);
+    margin-block-start: var(--s-12);
+  }
+
+  @media (min-width: 600px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
