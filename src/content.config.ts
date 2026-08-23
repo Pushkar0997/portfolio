@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 /* ─────────────────────────────────────────────────────────────
-   The evidence contract.
+   PROJECTS — past work. Evidence is what was measured.
 
    `status` and `evidenceLevel` must agree. `evidence` states in
    plain language what a visitor can go and check for themselves.
@@ -42,6 +42,40 @@ const projects = defineCollection({
   }),
 });
 
+/* ─────────────────────────────────────────────────────────────
+   PRODUCTS — things a stranger can open and use.
+
+   No evidenceLevel here, deliberately. A product's proof is that
+   the link works; "how much evidence backs this" is the wrong
+   question for something you can click. `access` states what a
+   first-time visitor can actually do without an account.
+
+     live             usable now by anyone
+     beta             usable, incomplete, and says so
+     in-development   not yet usable by a stranger
+     sunset           no longer maintained
+   ───────────────────────────────────────────────────────────── */
+
+const products = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/products' }),
+  schema: z.object({
+    title: z.string(),
+    tagline: z.string().max(160),
+    status: z.enum(['live', 'beta', 'in-development', 'sunset']),
+    year: z.string(),
+    access: z.string(),
+    links: z
+      .object({
+        site: z.string().url().optional(),
+        repo: z.string().url().optional(),
+        docs: z.string().url().optional(),
+      })
+      .default({}),
+    featured: z.boolean().default(false),
+    order: z.number().default(99),
+  }),
+});
+
 const writing = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/writing' }),
   schema: z.object({
@@ -52,4 +86,4 @@ const writing = defineCollection({
   }),
 });
 
-export const collections = { projects, writing };
+export const collections = { projects, products, writing };

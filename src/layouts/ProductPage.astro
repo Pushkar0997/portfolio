@@ -1,0 +1,241 @@
+---
+import Page from './Page.astro';
+import StatusStamp from '../components/StatusStamp.astro';
+import type { ProductStatus } from '../components/StatusStamp.astro';
+
+/* Same shell as a case study, different proof.
+
+   A product has no evidence bar. Its proof is that the link
+   works — "how much evidence backs this" is the wrong question
+   for something a visitor can click and use in ten seconds.
+   The margin column leads with the access line instead: what a
+   first-time visitor can actually do without an account. */
+
+interface Props {
+  title: string;
+  tagline: string;
+  status: ProductStatus;
+  year: string;
+  access: string;
+  links: {
+    site?: string;
+    repo?: string;
+    docs?: string;
+  };
+}
+
+const { title, tagline, status, year, access, links } = Astro.props;
+
+const linkLabels = {
+  site: 'Open it',
+  repo: 'Source',
+  docs: 'Documentation',
+} as const;
+
+const linkEntries = (
+  Object.entries(links) as [keyof typeof linkLabels, string][]
+).filter(([, url]) => Boolean(url));
+---
+
+<Page title={`${title} — Pushkar Kumar`} description={tagline}>
+  <article class="wrap product">
+    <header class="head">
+      <p class="label breadcrumb">
+        <a href="/products/">Products</a>
+      </p>
+
+      <h1>{title}</h1>
+      <p class="tagline">{tagline}</p>
+    </header>
+
+    <div class="body">
+      <div class="prose-col">
+        <slot />
+      </div>
+
+      <aside class="margin-col" aria-label="Product status and links">
+        <div class="panel">
+          <p class="label panel-label">Status</p>
+          <StatusStamp status={status} />
+          <p class="access">{access}</p>
+        </div>
+
+        <div class="panel">
+          <p class="label panel-label">Details</p>
+          <dl>
+            <dt class="label">Year</dt>
+            <dd>{year}</dd>
+          </dl>
+        </div>
+
+        {
+          linkEntries.length > 0 && (
+            <div class="panel">
+              <p class="label panel-label">Try it</p>
+              <ul>
+                {linkEntries.map(([key, url]) => (
+                  <li>
+                    <a href={url} rel="noopener">
+                      {linkLabels[key]}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+  </article>
+</Page>
+
+<style>
+  .product {
+    padding-block: var(--s-12) var(--s-16);
+  }
+
+  .breadcrumb {
+    margin: 0;
+  }
+
+  .breadcrumb a {
+    color: inherit;
+  }
+
+  h1 {
+    font-size: var(--step-4);
+    max-width: 22ch;
+    margin-block-start: var(--s-6);
+  }
+
+  .tagline {
+    font-size: var(--step-1);
+    color: var(--ink-2);
+    max-width: 54ch;
+    margin-block-start: var(--s-4);
+  }
+
+  .body {
+    margin-block-start: var(--s-12);
+    display: grid;
+    gap: var(--s-12);
+  }
+
+  .prose-col {
+    max-width: var(--width-prose);
+  }
+
+  .prose-col :global(h2) {
+    font-size: var(--step-2);
+    margin-block-start: var(--s-12);
+    padding-block-start: var(--s-4);
+    border-top: var(--hairline);
+    max-width: 28ch;
+  }
+
+  .prose-col :global(h2:first-child) {
+    margin-block-start: 0;
+    padding-block-start: 0;
+    border-top: 0;
+  }
+
+  .prose-col :global(p) {
+    margin-block-start: var(--s-4);
+  }
+
+  .prose-col :global(ul),
+  .prose-col :global(ol) {
+    margin-block-start: var(--s-4);
+    max-width: var(--measure);
+  }
+
+  .prose-col :global(li + li) {
+    margin-block-start: var(--s-2);
+  }
+
+  .prose-col :global(strong) {
+    font-weight: 500;
+  }
+
+  .prose-col :global(code) {
+    background: var(--surface);
+    padding: 0.1em 0.35em;
+    border: var(--hairline);
+  }
+
+  .margin-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-8);
+  }
+
+  .panel {
+    padding-block-start: var(--s-4);
+    border-top: var(--hairline-strong);
+  }
+
+  .panel-label {
+    margin: 0 0 var(--s-4);
+    color: var(--ink-3);
+  }
+
+  .access {
+    font-family: var(--font-mono);
+    font-size: var(--label);
+    letter-spacing: 0.04em;
+    color: var(--ink-3);
+    line-height: 1.5;
+    margin-block-start: var(--s-4);
+    max-width: 34ch;
+  }
+
+  .panel dl {
+    margin: 0;
+    display: grid;
+    gap: var(--s-1);
+  }
+
+  .panel dd {
+    margin: 0;
+    font-size: var(--step--1);
+  }
+
+  .panel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .panel ul a {
+    font-family: var(--font-mono);
+    font-size: var(--label);
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line-faint);
+    padding-block-end: var(--s-1);
+  }
+
+  .panel ul a:hover {
+    border-bottom-color: var(--ink);
+  }
+
+  @media (min-width: 900px) {
+    .product {
+      padding-block: var(--s-16) var(--s-24);
+    }
+
+    .body {
+      grid-template-columns: minmax(0, 8fr) minmax(0, 3fr);
+      gap: var(--s-16);
+      align-items: start;
+    }
+
+    .margin-col {
+      position: sticky;
+      top: var(--s-8);
+    }
+  }
+</style>

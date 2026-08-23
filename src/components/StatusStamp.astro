@@ -2,19 +2,36 @@
 /* Treatment A: the label is a stamp, not a badge.
    Outlined, never filled — a filled pill reads as a CI status
    chip. An outline reads as something applied deliberately by
-   a person who inspected the work. */
+   a person who inspected the work.
+
+   Handles two vocabularies. Projects describe how well the work
+   is evidenced; products describe whether a stranger can use it. */
+
+export type ProjectStatus =
+  | 'verified'
+  | 'in-progress'
+  | 'metrics-pending'
+  | 'reference';
+
+export type ProductStatus = 'live' | 'beta' | 'in-development' | 'sunset';
 
 interface Props {
-  status: 'verified' | 'in-progress' | 'metrics-pending' | 'reference';
+  status: ProjectStatus | ProductStatus;
 }
 
 const { status } = Astro.props;
 
 const labels = {
+  // projects
   verified: 'Verified',
   'in-progress': 'In progress',
   'metrics-pending': 'Metrics pending',
   reference: 'Reference',
+  // products
+  live: 'Live',
+  beta: 'Beta',
+  'in-development': 'In development',
+  sunset: 'Sunset',
 } as const;
 ---
 
@@ -33,17 +50,21 @@ const labels = {
     white-space: nowrap;
   }
 
-  /* The triad, spent only here and on the measure. */
-  .stamp[data-status='verified'] {
+  /* The triad, spent only here and on the evidence measure. */
+  .stamp[data-status='verified'],
+  .stamp[data-status='live'] {
     color: var(--verified-deep);
   }
 
-  .stamp[data-status='metrics-pending'] {
+  .stamp[data-status='metrics-pending'],
+  .stamp[data-status='beta'] {
     color: var(--missed-deep);
   }
 
   .stamp[data-status='in-progress'],
-  .stamp[data-status='reference'] {
+  .stamp[data-status='reference'],
+  .stamp[data-status='in-development'],
+  .stamp[data-status='sunset'] {
     color: var(--untested);
   }
 </style>
