@@ -1,9 +1,34 @@
 ---
 import Page from '../layouts/Page.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+import { credentials } from '../data/trust';
 
 const title = 'Pushkar Kumar — quantum algorithms and production ML systems';
 const description =
-  'Qiskit Advocate at IBM. Built quantum computing pipelines for QWorld&rsquo;s QIntern 2026 and the Moderna challenge in the WISER Global Quantum+AI Program. Technical Team Lead at QQuEST and Lead Organizer for Qiskit Fall Fest 2026.';
+  'Qiskit Advocate at IBM. Built quantum computing pipelines for QWorld\u0026rsquo;s QIntern 2026 and the Moderna challenge in the WISER Global Quantum+AI Program. Technical Team Lead at QQuEST and Lead Organizer for Qiskit Fall Fest 2026.';
+
+const featured = (await getCollection('projects'))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const doors = [
+  {
+    title: 'Products',
+    description: 'Things you can open and use right now.',
+    href: '/products/',
+  },
+  {
+    title: 'Work',
+    description: 'Case studies, with what each one can and can\u2019t do.',
+    href: '/work/',
+  },
+  {
+    title: 'Services',
+    description: 'What hiring me actually involves.',
+    href: '/services/',
+  },
+] as const;
 ---
 
 <Page title={title} description={description}>
@@ -35,9 +60,91 @@ const description =
       <a href="/work/">See the work</a>
     </p>
   </section>
+
+  <!-- ── Three doors ─────────────────────────────────────────── -->
+
+  <section class="wrap section doors-section">
+    <div class="doors-grid">
+      {
+        doors.map((door) => (
+          <div class="door">
+            <h2 class="door-title">
+              <a href={door.href}>{door.title}</a>
+            </h2>
+            <p class="door-desc">{door.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ── Featured work ───────────────────────────────────────── -->
+
+  <div class="ground-cool">
+    <section class="wrap section">
+      <h2>Selected work</h2>
+      <p class="label">Each carries what can be checked</p>
+
+      <div class="featured-grid">
+        {
+          featured.map((project) => (
+            <ProjectCard
+              href={`/work/${project.id}/`}
+              title={project.data.title}
+              tagline={project.data.tagline}
+              status={project.data.status}
+              evidence={project.data.evidence}
+              evidenceLevel={project.data.evidenceLevel}
+              year={project.data.year}
+              org={project.data.org}
+              domain={project.data.domain}
+            />
+          ))
+        }
+      </div>
+
+      <p class="cta">
+        <a href="/work/">All work</a>
+      </p>
+    </section>
+  </div>
+
+  <!-- ── Trust strip ─────────────────────────────────────────── -->
+
+  <section class="wrap section">
+    <h2>Credentials</h2>
+
+    <div class="trust-grid">
+      {
+        credentials.map((cred) => (
+          <div class="trust-entry">
+            <p class="trust-label">{cred.label}</p>
+            <p class="trust-detail">{cred.detail}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ── Contact ─────────────────────────────────────────────── -->
+
+  <section class="wrap section">
+    <h2>Work with me</h2>
+
+    <p class="contact-body">
+      Available for contract ML engineering, quantum algorithm work, and research
+      collaboration.
+    </p>
+
+    <p class="contact-email">
+      <a href="mailto:pushkarkumar0997@gmail.com">pushkarkumar0997@gmail.com</a>
+    </p>
+  </section>
 </Page>
 
 <style>
+  /* ── Hero — preserved exactly ────────────────────────────── */
+
   .hero {
     padding-block: var(--s-12) var(--s-16);
   }
@@ -126,5 +233,121 @@ const description =
     h1 {
       font-size: var(--step-4);
     }
+  }
+
+  /* ── Three doors ─────────────────────────────────────────── */
+
+  .doors-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-8);
+  }
+
+  @media (min-width: 900px) {
+    .doors-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .door {
+    position: relative;
+    border-top: var(--hairline);
+    padding-block-start: var(--s-6);
+  }
+
+  .door-title {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+  }
+
+  .door-title a {
+    text-decoration: none;
+  }
+
+  /* Stretched-anchor: the whole door is the click target */
+  .door-title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .door:hover .door-title a {
+    text-decoration: underline;
+    text-decoration-color: var(--ink-3);
+    text-underline-offset: 0.15em;
+  }
+
+  .door-desc {
+    color: var(--ink-2);
+    font-size: var(--step-0);
+    margin-block-start: var(--s-2);
+  }
+
+  /* ── Featured work ───────────────────────────────────────── */
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-8);
+    margin-block-start: var(--s-8);
+  }
+
+  @media (min-width: 600px) {
+    .featured-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .featured-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ── Trust strip ─────────────────────────────────────────── */
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--s-8);
+    margin-block-start: var(--s-8);
+  }
+
+  @media (min-width: 900px) {
+    .trust-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .trust-label {
+    font-family: var(--font-mono);
+    font-size: var(--label);
+    text-transform: uppercase;
+    letter-spacing: var(--label-track);
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .trust-detail {
+    font-size: var(--step--1);
+    color: var(--ink-3);
+    margin-block-start: var(--s-1);
+  }
+
+  /* ── Contact ─────────────────────────────────────────────── */
+
+  .contact-body {
+    color: var(--ink-2);
+    margin-block-start: var(--s-6);
+    max-width: 48ch;
+  }
+
+  .contact-email {
+    font-size: var(--step-1);
+    margin-block-start: var(--s-6);
+  }
+
+  .contact-email a {
+    text-decoration-color: var(--line-faint);
   }
 </style>
