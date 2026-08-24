@@ -25,11 +25,16 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-/* ── Headings ───────────────────────────────────────────────
-   Display face for h1/h2 only. h3+ uses body face at weight 500
-   because the serif gets muddy below --step-2. */
+body > main {
+  flex: 1;
+}
+
+/* ── Headings ───────────────────────────────────────────────*/
 
 h1,
 h2,
@@ -75,7 +80,7 @@ p {
 
 /* ── Links ──────────────────────────────────────────────────
    No accent colour anywhere. Emphasis is an underline, never a
-   hue — the triad is reserved for evidence. */
+   hue — the triad is reserved for evidence, gold for the ket. */
 
 a {
   color: inherit;
@@ -123,9 +128,33 @@ samp {
   font-size: 0.9em;
 }
 
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: var(--width-prose);
+  font-size: var(--step--1);
+}
+
+th,
+td {
+  text-align: left;
+  padding: var(--s-3) var(--s-4) var(--s-3) 0;
+  border-bottom: var(--hairline);
+  vertical-align: top;
+}
+
+th {
+  font-family: var(--font-mono);
+  font-size: var(--label);
+  letter-spacing: var(--label-track);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 400;
+}
+
 ::selection {
   background: var(--ink);
-  color: var(--surface);
+  color: var(--page);
 }
 
 /* ── Layout primitives ──────────────────────────────────────*/
@@ -141,7 +170,6 @@ samp {
   max-width: var(--width-prose);
 }
 
-/* Vertical rhythm. Only these three gaps exist. */
 .stack > * + * {
   margin-block-start: var(--s-4);
 }
@@ -164,8 +192,17 @@ samp {
   }
 }
 
-/* ── Mono label ─────────────────────────────────────────────
-   Metadata, section markers, status text. One size, always. */
+/* ── Grounds ────────────────────────────────────────────────
+   Warm is the default. Apply .ground-cool to any full-bleed
+   band that carries evidence — the archive, featured work,
+   anything with measures or stamps in it. */
+
+.ground-cool {
+  background: var(--surface);
+  border-block: var(--hairline-cool);
+}
+
+/* ── Mono label ─────────────────────────────────────────────*/
 
 .label {
   font-family: var(--font-mono);
@@ -197,7 +234,7 @@ samp {
   z-index: 100;
   padding: var(--s-2) var(--s-4);
   background: var(--ink);
-  color: var(--surface);
+  color: var(--page);
   font-family: var(--font-mono);
   font-size: var(--label);
   letter-spacing: var(--label-track);

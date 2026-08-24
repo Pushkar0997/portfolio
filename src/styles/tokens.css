@@ -4,35 +4,50 @@
    ───────────────────────────────────────────────────────────── */
 
 :root {
-  /* ── Ground ─────────────────────────────────────────────────
-     Cool dry bone, not warm paper. The difference is deliberate:
-     warm paper + green accent is a very common look right now. */
-  --page: #e8e5db;
-  --surface: #efece2;
-  --surface-alt: #ddd8ca;
+  /* ── Two grounds ────────────────────────────────────────────
+     WARM carries identity — hero, footer, page ground.
+     COOL carries evidence — cards, panels, measured things.
 
-  /* ── Ink and structure ─────────────────────────────────────
-     All non-evidence colour comes from this ramp. */
+     The temperature tells you which mode you are in. Warm is
+     where I speak; cool is where the numbers do. Separation is
+     1.04:1, visible as a plane change without being a stripe. */
+  --page: #ece5d2; /* warm — default body ground */
+  --surface: #e9eae2; /* cool bone — evidence surfaces */
+  --surface-raised: #f2ecdc; /* warm, lifted — rare */
+
+  --line: #dcd3bd; /* on warm */
+  --line-cool: #d5d7cb; /* on cool */
+  --line-strong: #cdc3a9;
+  --line-faint: #bdb49c;
+
+  /* ── Ink ────────────────────────────────────────────────────
+     All four steps meet 4.5:1 on both grounds. ink-3 and ink-4
+     were previously too light and failed the contrast floor —
+     mono labels at 11px are small text and need the full ratio. */
   --ink: #16211d;
   --ink-2: #47504b;
-  --ink-3: #6f6a5f;
-  --ink-4: #8b877c;
+  --ink-3: #5a5549;
+  --ink-4: #635e53;
 
-  --line: #d9d3c4;
-  --line-strong: #cfc9ba;
-  --line-faint: #b9b3a4;
+  /* ── Gold ───────────────────────────────────────────────────
+     ONE use: the ket notation in the hero. Not links, not
+     buttons, not headings, not borders. The moment it spreads
+     it stops being a signature and becomes a theme, and it
+     starts competing with the evidence triad. */
+  --gold: #8f7136;
 
-  /* ── The evidence triad ────────────────────────────────────
-     LAW: these three appear ONLY on evidence indicators.
-     Never on links, buttons, headings, borders, backgrounds.
-     Colour on this site means "this is a claim about proof". */
+  /* ── The evidence triad ─────────────────────────────────────
+     LAW: these appear ONLY on evidence indicators — status
+     stamps and measure bars. Colour on this site means "this
+     is a claim about proof". */
   --verified: #3f7d55;
   --verified-deep: #2f6741;
-  --untested: #9a958a;
+  --untested: #686359;
+  --untested-bar: #9a958a; /* bars only — not text */
   --missed: #b5432f;
   --missed-deep: #97371f;
 
-  /* ── Typefaces ─────────────────────────────────────────────
+  /* ── Typefaces ──────────────────────────────────────────────
      Three fonts, three jobs, no overlap.
      display = titles only, never below --step-2
      body    = all prose
@@ -41,8 +56,8 @@
   --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
 
-  /* ── Type scale ────────────────────────────────────────────
-     1.2 minor third, with a fluid top step for the hero. */
+  /* ── Type scale ─────────────────────────────────────────────
+     1.2 minor third, fluid top step for the hero. */
   --step--1: 0.833rem;
   --step-0: 1rem;
   --step-1: 1.2rem;
@@ -51,12 +66,10 @@
   --step-4: 3rem;
   --step-5: clamp(2.4rem, 5.5vw, 4.2rem);
 
-  /* Mono label: 11px, uppercase, wide tracking. One size only. */
   --label: 0.6875rem;
   --label-track: 0.16em;
 
-  /* ── Space — 4px base ──────────────────────────────────────
-     Use only these. No arbitrary margins. */
+  /* ── Space — 4px base ───────────────────────────────────────*/
   --s-1: 0.25rem;
   --s-2: 0.5rem;
   --s-3: 0.75rem;
@@ -67,22 +80,22 @@
   --s-16: 4rem;
   --s-24: 6rem;
 
-  /* ── Layout ────────────────────────────────────────────────*/
+  /* ── Layout ─────────────────────────────────────────────────*/
   --measure: 68ch;
   --width: 1120px;
   --width-prose: 720px;
   --gutter: clamp(1.25rem, 5vw, 3rem);
 
-  /* ── Motion ────────────────────────────────────────────────
-     Motion demonstrates or it doesn't ship. See motion.css. */
+  /* ── Motion ─────────────────────────────────────────────────*/
   --dur-fast: 180ms;
   --dur-base: 400ms;
   --dur-draw: 900ms;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 
-  /* ── Borders ───────────────────────────────────────────────
+  /* ── Borders ────────────────────────────────────────────────
      Hairlines throughout. 1px is the maximum anywhere. */
   --hairline: 1px solid var(--line);
+  --hairline-cool: 1px solid var(--line-cool);
   --hairline-strong: 1px solid var(--line-strong);
   --rule: 1px solid var(--ink);
 }

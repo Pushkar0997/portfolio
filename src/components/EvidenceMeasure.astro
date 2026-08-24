@@ -46,7 +46,7 @@ const clamped = Math.max(0, Math.min(1, level));
   .rail {
     position: relative;
     height: 3px;
-    background: var(--line);
+    background: var(--line-cool);
     overflow: hidden;
   }
 
@@ -65,7 +65,7 @@ const clamped = Math.max(0, Math.min(1, level));
   }
 
   .fill[data-status='in-progress'] {
-    background: var(--untested);
+    background: var(--untested-bar);
   }
 
   .dash {
@@ -74,7 +74,7 @@ const clamped = Math.max(0, Math.min(1, level));
     top: 0;
     height: 100%;
     width: 14px;
-    background: var(--untested);
+    background: var(--untested-bar);
   }
 
   .evidence {
