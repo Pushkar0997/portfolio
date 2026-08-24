@@ -1,13 +1,224 @@
 ---
 import Page from '../../layouts/Page.astro';
+
+const title = 'Services — Pushkar Kumar';
+const description =
+  'Contract ML engineering, quantum algorithm work, evaluation audits, and technical writing.';
+
+const services = [
+  {
+    name: 'Distributed training and pipeline debugging',
+    body: 'Multi-GPU training that hangs, corrupts checkpoints, or silently produces nothing. Cloud training setup on Vertex AI and comparable platforms. Launcher topology, DDP configuration, tokenisation races, checkpoint integrity, and the monitoring that catches a dead run before it burns a weekend of compute.',
+    proof: 'Built the distributed Longformer training stack on GCP Vertex AI after a silent deadlock cost twenty hours of GPU time.',
+    proofHref: '/work/veritas-ai/',
+  },
+  {
+    name: 'Model evaluation audits',
+    body: 'An independent read on whether a reported number means what it appears to mean. Data leakage, checkpoint-selection bias, train/serve skew, benchmarks that measure something adjacent to the deployment case. Delivered as a written report with the reproduction steps.',
+    proof: 'Found and published data leakage in my own result, withdrawing a +1.4 point gain that survived re-evaluation at +0.1.',
+    proofHref: '/work/quantum-document-pipeline/',
+  },
+  {
+    name: 'Benchmark design',
+    body: 'Comparisons built so that a negative result tells you which component is at fault. Controls, baselines that can fail, significance testing across splits, and honest reporting of what the measurement does not cover.',
+    proof: 'Built an exact brute-force control that proved a failing quantum solver was a formulation problem, not an optimiser problem.',
+    proofHref: '/work/rna-quantum-folding/',
+  },
+  {
+    name: 'Applied quantum algorithm work',
+    body: 'Hybrid quantum-classical pipelines in Qiskit. QUBO formulation, variational solvers, Grover oracles, encoding schemes, noise-robustness studies, and resource analysis that reports measured circuit depth rather than asymptotic promises.',
+    proof: 'Qiskit Advocate at IBM. Reproduced a reference RNA structure at zero energy gap across 35 noise conditions.',
+    proofHref: '/work/rna-quantum-folding/',
+  },
+  {
+    name: 'Technical writing and explainers',
+    body: 'Making a technical result legible to people who did not build it — research write-ups, documentation, interactive explainers. Written so a reader can check the claims rather than take them on trust.',
+    proof: 'Wrote the interactive explainer and final report for the WISER Moderna challenge.',
+    proofHref: '/work/rna-quantum-folding/',
+  },
+  {
+    name: 'Workshops and teaching',
+    body: 'Hands-on sessions on quantum computing and machine learning for student groups, developer communities, and teams starting out in either. Materials built to be reused after the session ends.',
+    proof: 'Ran a TensorFlow workshop for Google Developer Group on campus. Technical Team Lead at QQuEST.',
+    proofHref: null,
+  },
+];
 ---
 
-<Page
-  title="Services — Pushkar Kumar"
-  description="Consulting and engineering services in ML and quantum algorithms."
->
-  <section class="wrap section stack">
-    <h1>Services</h1>
-    <p class="label">In progress</p>
+<Page title={title} description={description}>
+  <section class="wrap section">
+    <h1>What hiring me involves</h1>
+
+    <p class="intro">
+      I build machine learning systems that run in production and quantum
+      algorithms that report what they actually achieved. Most of the work below
+      comes down to the same thing: making a system's real behaviour visible,
+      whether that means fixing a training run that dies silently or finding out
+      that a 97% accuracy figure was measured on the wrong distribution.
+    </p>
+
+    <p class="intro">
+      Every engagement ends with a written account of what was done, what it
+      measured, and what it did not cover.
+    </p>
+  </section>
+
+  <div class="ground-cool">
+    <section class="wrap section">
+      <h2>Services</h2>
+      <p class="label">Each with the work it comes from</p>
+
+      <div class="services">
+        {
+          services.map((s) => (
+            <article class="service">
+              <h3>{s.name}</h3>
+              <p class="body">{s.body}</p>
+              <p class="proof">
+                {s.proof}
+                {s.proofHref && (
+                  <>
+                    {' '}
+                    <a href={s.proofHref}>See the work</a>
+                  </>
+                )}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+
+  <section class="wrap section">
+    <h2>How it works</h2>
+
+    <div class="how">
+      <div class="step">
+        <p class="label">First</p>
+        <p>
+          Tell me what the problem is and what you have already tried. If it is
+          not something I can do well, I will say so and point you elsewhere.
+        </p>
+      </div>
+      <div class="step">
+        <p class="label">Then</p>
+        <p>
+          A scoped proposal with a fixed deliverable, a timeline, and a price.
+          For audits and short engagements this is usually a fixed fee rather
+          than an hourly rate.
+        </p>
+      </div>
+      <div class="step">
+        <p class="label">Throughout</p>
+        <p>
+          Working code and written findings as they land, not a single delivery
+          at the end. If something I find changes the scope, you hear it when I
+          find it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section contact">
+    <h2>Start a conversation</h2>
+    <p>
+      Send a short description of the problem. I reply to everything, including
+      to say no.
+    </p>
+    <p class="email">
+      <a href="mailto:pushkarkumar0997@gmail.com">pushkarkumar0997@gmail.com</a>
+    </p>
+    <p class="availability label">
+      Currently taking contract and collaboration work &middot; Pune, India
+      &middot; remote
+    </p>
   </section>
 </Page>
+
+<style>
+  .intro {
+    font-size: var(--step-1);
+    color: var(--ink-2);
+    max-width: 60ch;
+    margin-block-start: var(--s-8);
+  }
+
+  .intro + .intro {
+    margin-block-start: var(--s-4);
+  }
+
+  .services {
+    margin-block-start: var(--s-12);
+    display: grid;
+    gap: var(--s-12);
+  }
+
+  .service {
+    padding-block-start: var(--s-6);
+    border-top: var(--hairline);
+  }
+
+  .service h3 {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    max-width: 26ch;
+  }
+
+  .service .body {
+    margin-block-start: var(--s-4);
+    max-width: 58ch;
+  }
+
+  .service .proof {
+    margin-block-start: var(--s-4);
+    font-family: var(--font-mono);
+    font-size: var(--label);
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+    color: var(--ink-3);
+    max-width: 52ch;
+  }
+
+  .how {
+    margin-block-start: var(--s-12);
+    display: grid;
+    gap: var(--s-8);
+  }
+
+  .step .label {
+    margin: 0 0 var(--s-3);
+  }
+
+  .step p + p {
+    max-width: 46ch;
+  }
+
+  .contact h2 + p {
+    margin-block-start: var(--s-6);
+    max-width: 48ch;
+  }
+
+  .email {
+    font-size: var(--step-1);
+    margin-block-start: var(--s-6);
+  }
+
+  .availability {
+    margin-block-start: var(--s-12);
+    padding-block-start: var(--s-4);
+    border-top: var(--hairline);
+  }
+
+  @media (min-width: 700px) {
+    .services {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-12) var(--s-8);
+    }
+
+    .how {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-8);
+    }
+  }
+</style>
