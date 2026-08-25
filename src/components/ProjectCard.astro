@@ -16,6 +16,7 @@ interface Props {
   year: string;
   org?: string;
   domain: 'ml' | 'quantum' | 'edge';
+  headingLevel?: 2 | 3;
 }
 
 const {
@@ -28,6 +29,7 @@ const {
   year,
   org,
   domain,
+  headingLevel = 3,
 } = Astro.props;
 
 const domainLabels = {
@@ -47,9 +49,11 @@ const domainLabels = {
     <StatusStamp status={status} />
   </div>
 
-  <h3>
-    <a href={href}>{title}</a>
-  </h3>
+  {
+    headingLevel === 2
+      ? <h2 class="card-title"><a href={href}>{title}</a></h2>
+      : <h3 class="card-title"><a href={href}>{title}</a></h3>
+  }
 
   <p class="tagline">{tagline}</p>
 </article>
@@ -82,7 +86,7 @@ const domainLabels = {
     margin: 0;
   }
 
-  h3 {
+  .card-title {
     font-family: var(--font-display);
     font-size: var(--step-2);
     line-height: 1.15;
@@ -90,13 +94,13 @@ const domainLabels = {
     max-width: 24ch;
   }
 
-  h3 a {
+  .card-title a {
     text-decoration: none;
   }
 
   /* Whole card is the hit target, without nesting interactive
      elements — the anchor stretches over the article. */
-  h3 a::after {
+  .card-title a::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -106,7 +110,7 @@ const domainLabels = {
     position: relative;
   }
 
-  .card:hover h3 a {
+  .card:hover .card-title a {
     text-decoration: underline;
     text-decoration-color: var(--ink-3);
     text-underline-offset: 0.15em;

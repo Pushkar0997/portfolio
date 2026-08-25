@@ -31,6 +31,7 @@ const projects = (await getCollection('projects')).sort(
             year={project.data.year}
             org={project.data.org}
             domain={project.data.domain}
+            headingLevel={2}
           />
         ))
       }

@@ -28,6 +28,7 @@ const products = (await getCollection('products')).sort(
             status={product.data.status}
             access={product.data.access}
             year={product.data.year}
+            headingLevel={2}
           />
         ))
       }

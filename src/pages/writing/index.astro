@@ -34,7 +34,7 @@ const posts = (await getCollection('writing'))
                   <a href={`/writing/${post.id}/`}>{post.data.title}</a>
                 </h2>
                 <p class="desc">{post.data.description}</p>
-                <p class="label date">{formatted}</p>
+                <time class="label date" datetime={post.data.date.toISOString().slice(0, 10)}>{formatted}</time>
               </article>
             );
           })}
@@ -80,6 +80,7 @@ const posts = (await getCollection('writing'))
   }
 
   .date {
+    display: block;
     margin-block-start: var(--s-3);
   }
 </style>
