@@ -1,10 +1,11 @@
 ---
 title: RepoBridge
 tagline: Turns a public GitHub repository into grounded, traceable context for an LLM — and never claims to have read something it didn't.
-status: in-development
+status: beta
 year: '2026'
-access: 'Not yet deployed. Repository private until release.'
-links: {}
+access: 'Paste a public repo URL and run it. No account. Shared instance with published limits.'
+links:
+  site: https://repobridge.pushkarkumar.me
 featured: true
 order: 2
 ---
@@ -75,14 +76,14 @@ The project began with an audit of an earlier attempt that had claimed a milesto
 
 Eleven milestones, 646 tests, 12 documented smoke runs against real repositories from 1 to 37,393 entries. Python, FastAPI, SQLAlchemy with aiosqlite, Jinja2, hand-written CSS and JavaScript, Gemini for summarisation, pytest. No frontend framework, no build step, and no dependency added without a recorded reason — a constraint that held across all eleven milestones.
 
-## Current state
+## What the public instance is and isn't
 
-v0.1, complete and tagged. Not yet deployed.
+The deployment at `repobridge.pushkarkumar.me` is a shared demo running on one set of API keys against one database. Every analysis is visible to everyone using it, there are no accounts, and stored runs do not survive a restart. The limits are published on the page rather than discovered by hitting them: 20 analyses per hour across all visitors, 5 per visitor, repositories up to 5,000 tree entries, at most 100 files read per run.
 
-Public repositories only. A 200-file read cap per run. Python, JavaScript, TypeScript, notebooks, Markdown, config and documentation are read; other languages' source is out of scope for v0.1 and reported as such rather than silently skipped. Single LLM provider. Local-first, so no authentication, no multi-user, one SQLite file.
+Those constraints are a property of this instance, not of the tool. Running it locally removes all of them.
 
-Both API keys are optional. Without them the tool degrades and explains its own limits in the interface rather than failing opaquely.
+v0.1 covers public repositories only. Python, JavaScript, TypeScript, notebooks, Markdown, config and documentation are read; other languages' source is out of scope and reported as such rather than silently skipped. Single LLM provider. Both API keys are optional — without them the tool degrades and explains its own limits in the interface rather than failing opaquely.
 
 Two decisions worth stating with their costs. No migrations in v0.1, because every stored row derives from a public repository and regenerates on re-run — a reset costs API quota, not information. And no API version prefix, because a prefix is a promise v0.1 cannot keep, and shipping one then breaking it is worse than never shipping one.
 
-Next: multi-user deployment, and an MCP server so any LLM client can call RepoBridge as a tool instead of a person operating the interface.
+Next: multi-user deployment with private workspaces, and an MCP server so any LLM client can call RepoBridge as a tool instead of a person operating the interface.
