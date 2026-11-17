@@ -11,7 +11,7 @@ links:
   repo: https://github.com/Harold-Ohandja/Moderna-Quantum-RNA-
   demo: https://harold-ohandja.github.io/Moderna-Quantum-RNA-/
 featured: true
-order: 2
+order: 4
 ---
 
 ## The problem

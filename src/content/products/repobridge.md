@@ -6,6 +6,7 @@ year: '2026'
 access: 'Paste a public repo URL and run it. No account. Shared instance with published limits.'
 links:
   site: https://repobridge.pushkarkumar.me
+  repo: https://github.com/Pushkar0997/RepoBridge
 featured: true
 order: 2
 ---

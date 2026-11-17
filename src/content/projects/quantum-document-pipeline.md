@@ -12,7 +12,7 @@ links:
   demo: https://pushkar0997.github.io/qi26_25/
   report: https://github.com/Pushkar0997/qi26_25/blob/main/docs/final_report.md
 featured: true
-order: 1
+order: 3
 ---
 
 ## What it does
